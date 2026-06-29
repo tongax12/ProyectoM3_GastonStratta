@@ -1,0 +1,28 @@
+{
+  "name": "proyectom3_gastonstratta",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tongax12/ProyectoM3_GastonStratta.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/tongax12/ProyectoM3_GastonStratta/issues"
+  },
+  "homepage": "https://github.com/tongax12/ProyectoM3_GastonStratta#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "vitest": "^4.1.9"
+  }
+}
