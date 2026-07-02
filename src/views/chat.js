@@ -35,15 +35,6 @@
       <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"></path>
     </svg>`;
 
-  /** Convierte un color hex ('#RRGGBB') a un string rgba() con la opacidad indicada. */
-  function hexToRgba(hex, alpha) {
-    const clean = hex.replace('#', '');
-    const r = parseInt(clean.substring(0, 2), 16);
-    const g = parseInt(clean.substring(2, 4), 16);
-    const b = parseInt(clean.substring(4, 6), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  }
-
   function escapeHTML(str) {
     const div = document.createElement('div');
     div.textContent = str;
@@ -217,6 +208,10 @@
     const form = container.querySelector('#chat-form');
     const input = container.querySelector('#chat-input');
     const typingEl = container.querySelector('#typing-indicator');
+
+    Router.setBeforeLeave(() => {
+      document.body.style.background = '';
+    });
     const typingLabel = container.querySelector('#typing-label');
     const toastContainer = container.querySelector('#toast-container');
 
@@ -246,19 +241,7 @@
       root.style.setProperty('--c-surface', c.palette.surface);
       root.style.setProperty('--c-text', c.palette.text);
       root.style.setProperty('--c-on-primary', c.palette.onPrimary);
-      const photo = c.bgImage || c.avatarImage;
-      root.style.setProperty('--c-header-photo', photo ? `url('${photo}')` : 'none');
-
-      // Fondo del chat-log seteado directo por JS (no depende de la cascada CSS)
-      if (photo) {
-        const tint = hexToRgba(c.palette.bg, 0.65);
-        log.style.backgroundImage = `linear-gradient(${tint}, ${tint}), url('${photo}')`;
-        log.style.backgroundSize = 'cover';
-        log.style.backgroundPosition = 'center 20%';
-        log.style.backgroundRepeat = 'no-repeat';
-      } else {
-        log.style.backgroundImage = 'none';
-      }
+      document.body.style.background = `color-mix(in srgb, ${c.palette.primary} 38%, var(--app-bg))`;
       container.querySelector('#chat-avatar').innerHTML = characterAvatarHTML(c);
       container.querySelector('#chat-name').textContent = c.name;
       typingLabel.textContent = `${c.name.split(' ')[0]} está escribiendo...`;

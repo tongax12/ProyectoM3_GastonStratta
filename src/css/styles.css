@@ -122,7 +122,7 @@ img { max-width: 100%; display: block; }
    ========================================================= */
 .view {
   padding: 20px 16px calc(var(--tabbar-h) + 24px);
-  max-width: 1080px;
+  max-width: 1320px;
   margin: 0 auto;
 }
 
@@ -291,13 +291,9 @@ img { max-width: 100%; display: block; }
   position: relative;
   display: flex; align-items: center; gap: 10px;
   padding: 14px 16px;
-  background:
-    linear-gradient(135deg,
-      color-mix(in srgb, var(--c-primary) 55%, transparent) 0%,
-      color-mix(in srgb, var(--c-primary) 88%, black 18%) 100%),
-    var(--c-header-photo, none);
-  background-size: cover;
-  background-position: center 22%;
+  background: linear-gradient(135deg,
+      var(--c-primary) 0%,
+      color-mix(in srgb, var(--c-primary) 88%, black 18%) 100%);
   border-bottom: 3px solid var(--c-secondary);
   transition: background 0.25s ease;
 }
@@ -515,7 +511,7 @@ img { max-width: 100%; display: block; }
 .swatch-label { font-family: var(--font-mono); font-size: 0.62rem; color: var(--app-ink-soft); }
 
 /* =========================================================
-   Breakpoint: Tablet (≥600px)
+   Breakpoint: Tablet (≥768px)
    ========================================================= */
 @media (min-width: 768px) {
   .view { padding: 32px 24px calc(var(--tabbar-h) + 32px); }
@@ -524,7 +520,15 @@ img { max-width: 100%; display: block; }
   .char-about-grid { grid-template-columns: repeat(2, 1fr); }
   .about-grid { grid-template-columns: repeat(2, 1fr); }
 
-  .view-chat { max-width: 640px; margin: 0 auto; border-left: 1px solid var(--app-line); border-right: 1px solid var(--app-line); }
+  .view-chat {
+    height: calc(100dvh - var(--header-h) - 16px);
+    max-width: 640px;
+    margin: 8px auto;
+    border: 1px solid var(--app-line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
 }
 
 /* =========================================================
@@ -559,11 +563,11 @@ img { max-width: 100%; display: block; }
   .char-card:hover { transform: translateY(-4px); }
 
   .view-chat {
-    height: calc(100dvh - var(--header-h) - 32px);
-    max-width: 920px;
+    height: calc(100dvh - var(--header-h) - 16px);
+    max-width: 1180px;
     border: 1px solid var(--app-line);
     border-radius: var(--radius-lg);
-    margin: 16px auto;
+    margin: 8px auto;
     overflow: hidden;
     box-shadow: var(--shadow-md);
   }
