@@ -7,7 +7,7 @@
   function cardTemplate(character) {
     return `
       <article class="char-card" data-character="${character.id}" style="--c-primary:${character.palette.primary}; --c-secondary:${character.palette.secondary};">
-        <div class="char-card-avatar" aria-hidden="true">${character.avatar}</div>
+        <div class="char-card-avatar" aria-hidden="true">${characterAvatarHTML(character)}</div>
         <h3 class="char-card-name">${character.name}</h3>
         <p class="char-card-tagline">${character.tagline}</p>
         <button class="btn btn-primary char-card-btn" type="button" data-start="${character.id}">

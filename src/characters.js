@@ -15,7 +15,9 @@ const CHARACTERS = [
     id: 'messi',
     name: 'Leo Messi',
     tagline: 'La Pulga. Magia con la zurda.',
-    avatar: '🐐',
+    avatar: '🐐', // fallback si avatarImage no carga
+    avatarImage: './img/messi.jpg',
+    bgImage: './img/messi-bg.jpg',
     bio: 'Capitán de la Selección Argentina campeona del mundo, ocho veces Balón de Oro. Habla con calma, humildad y pasión por el fútbol de potrero.',
     palette: {
       primary: '#5BA8E0',   // celeste albiceleste
@@ -37,7 +39,9 @@ const CHARACTERS = [
     id: 'djokovic',
     name: 'Novak Djokovic',
     tagline: 'Nole. Disciplina, elasticidad mental y récords.',
-    avatar: '🎾',
+    avatar: '🎾', // fallback si avatarImage no carga
+    avatarImage: './img/djokovic.jpg',
+    bgImage: './img/djokovic-bg.jpg',
     bio: 'Tenista serbio, el mayor ganador de torneos de Grand Slam en la historia del tenis masculino. Filosófico, meticuloso y obsesionado con la mejora constante.',
     palette: {
       primary: '#C6363C',   // rojo de la bandera serbia
@@ -59,7 +63,9 @@ const CHARACTERS = [
     id: 'shrek',
     name: 'Shrek',
     tagline: 'El ogro más querido del pantano.',
-    avatar: '👹',
+    avatar: '👹', // fallback si avatarImage no carga
+    avatarImage: './img/shrek.jpg',
+    bgImage: './img/shrek-bg.jpg',
     bio: 'Ogro gruñón pero de buen corazón, dueño de un pantano en un reino muy, muy lejano. Sarcástico, directo y con un cariño especial por las cebollas.',
     palette: {
       primary: '#6B8E23',   // verde ogro
@@ -81,7 +87,9 @@ const CHARACTERS = [
     id: 'mike',
     name: 'Mike Wazowski',
     tagline: 'El ojo más asustador (y simpático) de Monstruos S.A.',
-    avatar: '👁️',
+    avatar: '👁️', // fallback si avatarImage no carga
+    avatarImage: './img/mike.jpg',
+    bgImage: './img/mike-bg.jpg',
     bio: 'Monstruo verde de un solo ojo, mejor amigo de Sulley y experto en sustos y en hablar sin parar. Optimista, gracioso y siempre con un chiste a mano.',
     palette: {
       primary: '#6FCB3D',   // verde Mike
@@ -104,4 +112,20 @@ const CHARACTERS = [
 /** Devuelve un personaje por id, o el primero si no se encuentra. */
 function getCharacter(id) {
   return CHARACTERS.find((c) => c.id === id) || CHARACTERS[0];
+}
+
+/**
+ * Devuelve el HTML a inyectar en cualquier "hueco" de avatar.
+ * Si el personaje tiene avatarImage, usa la foto (con el emoji como
+ * fallback visual vía onerror); si no, usa el emoji directamente.
+ * Se usa en home.js, chat.js y about.js para que todos los avatares
+ * (tarjetas, tabs, header del chat, burbujas, ficha "Acerca de") se
+ * comporten igual sin duplicar esta lógica en cada vista.
+ */
+function characterAvatarHTML(character) {
+  if (character.avatarImage) {
+    return `<img class="avatar-img" src="${character.avatarImage}" alt="${character.name}"
+                 onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${character.avatar}'}))" />`;
+  }
+  return character.avatar;
 }

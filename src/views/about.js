@@ -62,7 +62,7 @@
           ${CHARACTERS.map((c) => `
             <article class="char-about-card" style="--c-primary:${c.palette.primary}">
               <div class="char-about-head">
-                <span class="char-about-avatar" aria-hidden="true">${c.avatar}</span>
+                <span class="char-about-avatar" aria-hidden="true">${characterAvatarHTML(c)}</span>
                 <div>
                   <h3>${c.name}</h3>
                   <p class="char-about-tagline">${c.tagline}</p>
