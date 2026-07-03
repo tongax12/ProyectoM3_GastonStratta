@@ -75,6 +75,7 @@
         </div>
       </section>
     `;
+    wireAvatarImages(container);
   }
 
   Router.register('about', render);

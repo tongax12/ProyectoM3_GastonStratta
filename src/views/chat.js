@@ -202,6 +202,7 @@
         </div>
       </section>
     `;
+    wireAvatarImages(container);
 
     const root = container.querySelector('.view-chat');
     const log = container.querySelector('#chat-log');
@@ -243,6 +244,7 @@
       root.style.setProperty('--c-on-primary', c.palette.onPrimary);
       document.body.style.background = `color-mix(in srgb, ${c.palette.primary} 38%, var(--app-bg))`;
       container.querySelector('#chat-avatar').innerHTML = characterAvatarHTML(c);
+      wireAvatarImages(container);
       container.querySelector('#chat-name').textContent = c.name;
       typingLabel.textContent = `${c.name.split(' ')[0]} está escribiendo...`;
     }
@@ -254,6 +256,7 @@
     function renderLog(characterId) {
       const history = ensureConversation(characterId);
       log.innerHTML = history.map((m, i) => messageBubble(m, characterId, i)).join('');
+      wireAvatarImages(log);
       if (typingState[characterId]) {
         typingEl.hidden = false;
       } else {

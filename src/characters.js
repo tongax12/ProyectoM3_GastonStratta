@@ -17,7 +17,6 @@ const CHARACTERS = [
     tagline: 'La Pulga. Magia con la zurda.',
     avatar: '🐐', // fallback si avatarImage no carga
     avatarImage: './img/messi.jpg',
-    bgImage: './img/messi-bg.jpg',
     bio: 'Capitán de la Selección Argentina campeona del mundo, ocho veces Balón de Oro. Habla con calma, humildad y pasión por el fútbol de potrero.',
     palette: {
       primary: '#5BA8E0',   // celeste albiceleste
@@ -41,7 +40,6 @@ const CHARACTERS = [
     tagline: 'Nole. Disciplina, elasticidad mental y récords.',
     avatar: '🎾', // fallback si avatarImage no carga
     avatarImage: './img/djokovic.jpg',
-    bgImage: './img/djokovic-bg.jpg',
     bio: 'Tenista serbio, el mayor ganador de torneos de Grand Slam en la historia del tenis masculino. Filosófico, meticuloso y obsesionado con la mejora constante.',
     palette: {
       primary: '#C6363C',   // rojo de la bandera serbia
@@ -65,7 +63,6 @@ const CHARACTERS = [
     tagline: 'El ogro más querido del pantano.',
     avatar: '👹', // fallback si avatarImage no carga
     avatarImage: './img/shrek.jpg',
-    bgImage: './img/shrek-bg.jpg',
     bio: 'Ogro gruñón pero de buen corazón, dueño de un pantano en un reino muy, muy lejano. Sarcástico, directo y con un cariño especial por las cebollas.',
     palette: {
       primary: '#6B8E23',   // verde ogro
@@ -89,7 +86,6 @@ const CHARACTERS = [
     tagline: 'El ojo más asustador (y simpático) de Monstruos S.A.',
     avatar: '👁️', // fallback si avatarImage no carga
     avatarImage: './img/mike.jpg',
-    bgImage: './img/mike-bg.jpg',
     bio: 'Monstruo verde de un solo ojo, mejor amigo de Sulley y experto en sustos y en hablar sin parar. Optimista, gracioso y siempre con un chiste a mano.',
     palette: {
       primary: '#6FCB3D',   // verde Mike
@@ -122,10 +118,39 @@ function getCharacter(id) {
  * (tarjetas, tabs, header del chat, burbujas, ficha "Acerca de") se
  * comporten igual sin duplicar esta lógica en cada vista.
  */
+/**
+ * Reintenta cargar la imagen de avatar ante un fallo transitorio (ej: el
+ * servidor de desarrollo todavía no terminó de servir el archivo en la
+ * primera carga en frío de la página). Si falla 2 veces, recién ahí cae
+ * definitivamente al emoji.
+ */
+function handleAvatarError(img) {
+  const attempts = parseInt(img.dataset.retry || '0', 10);
+  if (attempts < 2) {
+    img.dataset.retry = String(attempts + 1);
+    const baseSrc = img.src.split('?')[0];
+    setTimeout(() => { img.src = `${baseSrc}?r=${attempts + 1}`; }, 250);
+  } else {
+    img.replaceWith(Object.assign(document.createElement('span'), { textContent: img.dataset.fallback || '' }));
+  }
+}
+
 function characterAvatarHTML(character) {
   if (character.avatarImage) {
-    return `<img class="avatar-img" src="${character.avatarImage}" alt="${character.name}"
-                 onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${character.avatar}'}))" />`;
+    return `<img class="avatar-img" src="${character.avatarImage}" alt="${character.name}" data-fallback="${character.avatar}" />`;
   }
   return character.avatar;
+}
+
+/**
+ * Engancha el manejo de error (sin atributos inline, para no chocar con
+ * Content-Security-Policy) a todas las <img class="avatar-img"> nuevas
+ * dentro de un contenedor. Hay que llamarla después de cualquier
+ * innerHTML que inserte avatares (home.js, chat.js, about.js).
+ */
+function wireAvatarImages(scope) {
+  (scope || document).querySelectorAll('img.avatar-img:not([data-wired])').forEach((img) => {
+    img.dataset.wired = '1';
+    img.addEventListener('error', () => handleAvatarError(img));
+  });
 }

@@ -34,6 +34,7 @@
         </div>
       </section>
     `;
+    wireAvatarImages(container);
 
     container.querySelectorAll('[data-start]').forEach((btn) => {
       btn.addEventListener('click', () => {
