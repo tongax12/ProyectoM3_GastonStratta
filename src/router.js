@@ -2,125 +2,90 @@
  * router.js
  * Router SPA minimalista basado en la History API (pushState/popstate).
  *
- * - Intercepta clicks en enlaces internos (data-link) para evitar recargas.
- * - Soporta los botones Atrás/Adelante del navegador vía 'popstate'.
- * - Cada ruta se asocia a una función render(container, params) registrada
- *   por los módulos en js/views/*.js a través de Router.register().
+ * Patrón simple: router() es una función que lee la URL actual y
+ * renderiza la vista correspondiente en #view-root. Se llama en
+ * 'popstate' y al arrancar la app (ver main.js). navigate() actualiza
+ * el historial y vuelve a llamar a router().
  */
-const Router = (() => {
-  const routes = {};        // { 'home': renderFn, 'chat': renderFn, 'about': renderFn }
-  let viewRoot = null;
-  let currentRoute = null;
-  let beforeLeave = null;   // hook opcional que la vista activa puede registrar
+import { render as renderHome } from './views/home.js';
+import { render as renderChat } from './views/chat.js';
+import { render as renderAbout } from './views/about.js';
 
-  function register(name, renderFn) {
-    routes[name] = renderFn;
-  }
+const routes = { home: renderHome, chat: renderChat, about: renderAbout };
 
-  /** La vista activa puede registrar una función de limpieza antes de cambiar de ruta. */
-  function setBeforeLeave(fn) {
-    beforeLeave = fn;
-  }
+let beforeLeave = null; // hook opcional que la vista activa puede registrar
 
-  function parsePath(pathname) {
-    // normaliza "/", "/index.html", "" -> "home"
-    const clean = pathname.replace(/^\/+|\/+$/g, '');
-    if (clean === '' || clean === 'index.html') return 'home';
-    return clean.split('/')[0];
-  }
+/** La vista activa puede registrar una función de limpieza antes de cambiar de ruta. */
+export function setBeforeLeave(fn) {
+  beforeLeave = fn;
+}
 
-  function updateActiveNav(routeName) {
-    document.querySelectorAll('[data-route]').forEach((el) => {
-      el.classList.toggle('is-active', el.dataset.route === routeName);
-      if (el.dataset.route === routeName) {
-        el.setAttribute('aria-current', 'page');
-      } else {
-        el.removeAttribute('aria-current');
-      }
-    });
-  }
+function parsePath(pathname) {
+  // normaliza "/", "/index.html", "" -> "home"
+  const clean = pathname.replace(/^\/+|\/+$/g, '');
+  if (clean === '' || clean === 'index.html') return 'home';
+  return clean.split('/')[0];
+}
 
-  function render(routeName, params, options = {}) {
-    const name = routes[routeName] ? routeName : 'home';
-
-    if (typeof beforeLeave === 'function') {
-      try { beforeLeave(); } catch (e) { /* no-op */ }
-      beforeLeave = null;
-    }
-
-    currentRoute = name;
-    updateActiveNav(name);
-
-    const renderFn = routes[name];
-    viewRoot.innerHTML = '';
-    if (renderFn) {
-      renderFn(viewRoot, params || {});
+function updateActiveNav(routeName) {
+  document.querySelectorAll('[data-route]').forEach((el) => {
+    el.classList.toggle('is-active', el.dataset.route === routeName);
+    if (el.dataset.route === routeName) {
+      el.setAttribute('aria-current', 'page');
     } else {
-      viewRoot.innerHTML = '<p class="not-found">Vista no encontrada.</p>';
+      el.removeAttribute('aria-current');
     }
+  });
+}
 
-    if (!options.skipFocus) {
-      viewRoot.setAttribute('tabindex', '-1');
-      viewRoot.focus({ preventScroll: true });
-    }
-    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+/**
+ * Lee la URL actual y renderiza la vista correspondiente en #view-root.
+ * Se llama en 'popstate' (ver main.js) y cada vez que navigate() cambia
+ * la URL.
+ */
+export function router() {
+  // Normaliza la barra de direcciones: "/" -> "/home"
+  if (window.location.pathname === '/') {
+    history.replaceState({}, '', '/home' + window.location.search);
   }
 
-  function navigate(path, { replace = false, state = {} } = {}) {
-    const url = new URL(path, window.location.origin);
-    const routeName = parsePath(url.pathname);
-    const params = Object.fromEntries(url.searchParams.entries());
+  const name = parsePath(window.location.pathname);
+  const routeName = routes[name] ? name : 'home';
+  const params = Object.fromEntries(new URL(window.location.href).searchParams.entries());
 
-    const historyState = { route: routeName, params, ...state };
-    if (replace) {
-      history.replaceState(historyState, '', url.pathname + url.search);
-    } else {
-      history.pushState(historyState, '', url.pathname + url.search);
-    }
-    render(routeName, params);
+  if (typeof beforeLeave === 'function') {
+    try { beforeLeave(); } catch (e) { /* no-op */ }
+    beforeLeave = null;
   }
 
-  function handlePopState(event) {
-    // Si no hay state (ej: primera carga manipulada manualmente), parseamos la URL actual
-    const state = event.state || {
-      route: parsePath(window.location.pathname),
-      params: Object.fromEntries(new URL(window.location.href).searchParams.entries())
-    };
-    render(state.route, state.params, { skipFocus: true });
+  updateActiveNav(routeName);
+
+  const viewRoot = document.getElementById('view-root');
+  viewRoot.innerHTML = '';
+
+  const renderFn = routes[routeName];
+  if (renderFn) {
+    renderFn(viewRoot, params);
+  } else {
+    viewRoot.innerHTML = '<p class="not-found">Vista no encontrada.</p>';
   }
 
-  function interceptLinks() {
-    document.addEventListener('click', (event) => {
-      const link = event.target.closest('[data-link]');
-      if (!link) return;
+  viewRoot.setAttribute('tabindex', '-1');
+  viewRoot.focus({ preventScroll: true });
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+}
 
-      // Permitir abrir en pestaña nueva / clicks modificados
-      if (event.defaultPrevented || event.button !== 0) return;
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-
-      const href = link.getAttribute('href');
-      if (!href || href.startsWith('http') || href.startsWith('//')) return;
-
-      event.preventDefault();
-      navigate(href);
-    });
+/**
+ * Actualiza la URL (pushState/replaceState) y vuelve a renderizar
+ * llamando a router(). La usan las vistas para navegar programáticamente
+ * (ej: al elegir un personaje en Inicio).
+ */
+export function navigate(path, { replace = false } = {}) {
+  const url = new URL(path, window.location.origin);
+  if (replace) {
+    history.replaceState({}, '', url.pathname + url.search);
+  } else {
+    history.pushState({}, '', url.pathname + url.search);
   }
-
-  function init(rootEl) {
-    viewRoot = rootEl;
-    interceptLinks();
-    window.addEventListener('popstate', handlePopState);
-
-    // Carga inicial: usamos la URL actual (permite deep-linking si el server
-    // redirige todas las rutas a index.html)
-    const initialPath = window.location.pathname === '/' ? '/home' : window.location.pathname;
-    const url = new URL(initialPath, window.location.origin + window.location.search);
-    const routeName = parsePath(window.location.pathname || '/home');
-    const params = Object.fromEntries(new URL(window.location.href).searchParams.entries());
-
-    history.replaceState({ route: routeName, params }, '', (window.location.pathname === '/' ? '/home' : window.location.pathname) + window.location.search);
-    render(routeName, params, { skipFocus: true });
-  }
-
-  return { register, navigate, init, setBeforeLeave, get current() { return currentRoute; } };
-})();
+  router();
+}

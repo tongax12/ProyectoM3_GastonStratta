@@ -10,7 +10,7 @@
  *   --c-surface    fondo de tarjetas / header del chat
  *   --c-text       color de texto sobre --c-primary
  */
-const CHARACTERS = [
+export const CHARACTERS = [
   {
     id: 'messi',
     name: 'Leo Messi',
@@ -106,18 +106,10 @@ const CHARACTERS = [
 ];
 
 /** Devuelve un personaje por id, o el primero si no se encuentra. */
-function getCharacter(id) {
+export function getCharacter(id) {
   return CHARACTERS.find((c) => c.id === id) || CHARACTERS[0];
 }
 
-/**
- * Devuelve el HTML a inyectar en cualquier "hueco" de avatar.
- * Si el personaje tiene avatarImage, usa la foto (con el emoji como
- * fallback visual vía onerror); si no, usa el emoji directamente.
- * Se usa en home.js, chat.js y about.js para que todos los avatares
- * (tarjetas, tabs, header del chat, burbujas, ficha "Acerca de") se
- * comporten igual sin duplicar esta lógica en cada vista.
- */
 /**
  * Reintenta cargar la imagen de avatar ante un fallo transitorio (ej: el
  * servidor de desarrollo todavía no terminó de servir el archivo en la
@@ -135,7 +127,12 @@ function handleAvatarError(img) {
   }
 }
 
-function characterAvatarHTML(character) {
+/**
+ * Devuelve el HTML a inyectar en cualquier "hueco" de avatar.
+ * Si el personaje tiene avatarImage, usa la foto (con el emoji como
+ * fallback vía handleAvatarError); si no, usa el emoji directamente.
+ */
+export function characterAvatarHTML(character) {
   if (character.avatarImage) {
     return `<img class="avatar-img" src="${character.avatarImage}" alt="${character.name}" data-fallback="${character.avatar}" />`;
   }
@@ -148,7 +145,7 @@ function characterAvatarHTML(character) {
  * dentro de un contenedor. Hay que llamarla después de cualquier
  * innerHTML que inserte avatares (home.js, chat.js, about.js).
  */
-function wireAvatarImages(scope) {
+export function wireAvatarImages(scope) {
   (scope || document).querySelectorAll('img.avatar-img:not([data-wired])').forEach((img) => {
     img.dataset.wired = '1';
     img.addEventListener('error', () => handleAvatarError(img));
