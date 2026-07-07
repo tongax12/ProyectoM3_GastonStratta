@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     const contents = toGeminiContents(messages);
 
     const result = await ai.models.generateContent({
-      model: modelName,
+      model: 'gemini-3.1-flash-lite',
       contents,
       config: {
         systemInstruction: system,

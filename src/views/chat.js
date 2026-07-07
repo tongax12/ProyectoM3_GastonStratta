@@ -99,7 +99,7 @@ async function requestAIReply(characterId, history) {
     // El backend (functions.js) es genérico: no sabe nada de "personajes".
     // El system prompt con la personalidad lo armamos acá.
     system: buildCharacterSystemPrompt(character),
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.1-flash-lite',
     temperature: 0.9,
     maxTokens: 400,
     // Formato { role: 'user' | 'assistant', content } — mismo contrato
