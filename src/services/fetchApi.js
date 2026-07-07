@@ -11,7 +11,7 @@ export async function fetchChatReply({ system, model, temperature, maxTokens, me
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       system,
-      model,
+      model: 'gemini-3.1-flash-lite',
       temperature,
       max_tokens: maxTokens,
       messages
