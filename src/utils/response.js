@@ -1,4 +1,4 @@
-export function createChatResponse({ text, payload }) {
+export function createChatResponse({ text, payload, finishReason, usage }) {
   return {
     id: `msg_gemini_${Date.now()}`,
     type: 'message',
@@ -9,16 +9,25 @@ export function createChatResponse({ text, payload }) {
         text,
       },
     ],
-    stop_reason: 'end_turn',
+    stop_reason: mapStopReason(finishReason),
     usage: {
-      input_tokens: estimateTokens(JSON.stringify(payload)),
-      output_tokens: estimateTokens(text),
-    },
+    input_tokens: usage?.promptTokenCount ?? estimateTokens(JSON.stringify(payload)), //cuando USE_MOCK_AI = true, usa estimateTokens
+    output_tokens: usage?.candidatesTokenCount ?? estimateTokens(text), //cuando USE_MOCK_AI = true, usa estimateTokens
+  },
   };
+}
+
+function mapStopReason(reason) {
+  switch (reason) {
+    case 'MAX_TOKENS':
+      return 'max_tokens';
+    case 'STOP':
+      return 'end_turn';
+    default:
+      return 'end_turn';
+  }
 }
 
 function estimateTokens(text) {
   return Math.max(1, Math.ceil(String(text).length / 4));
 }
-
-

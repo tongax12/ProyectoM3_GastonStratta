@@ -35,8 +35,9 @@ export default async function handler(req, res) {
     });
 
     const text = (result.text || '').trim();
-
-    return res.status(200).json(createChatResponse({ text, payload }));
+    const finishReason = result.candidates?.[0]?.finishReason;
+    const usage = result.usageMetadata;
+    return res.status(200).json(createChatResponse({ text, payload, finishReason, usage}));
   } catch (error) {
     console.error('[/api/functions] Error:', error);
 

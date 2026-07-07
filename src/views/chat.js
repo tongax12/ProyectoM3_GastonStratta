@@ -101,7 +101,7 @@ async function requestAIReply(characterId, history) {
     system: buildCharacterSystemPrompt(character),
     model: 'gemini-2.5-flash',
     temperature: 0.9,
-    maxTokens: 200,
+    maxTokens: 400,
     // Formato { role: 'user' | 'assistant', content } — mismo contrato
     // que espera request.js/gemini.js del lado del servidor.
     messages: history.map((m) => ({
