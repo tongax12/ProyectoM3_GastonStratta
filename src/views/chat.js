@@ -54,22 +54,6 @@ function ensureConversation(characterId) {
   return conversations[characterId];
 }
 
-/**
- * Arma el system prompt de personalidad para un personaje. Vive acá
- * (no en el backend) porque functions.js es agnóstico de personajes:
- * solo sabe hablar con Gemini.
- */
-function buildCharacterSystemPrompt(character) {
-  return [
-    `Estás interpretando a ${character.name} ("${character.tagline}") en una app de chat llamada CharChat.`,
-    `Descripción del personaje: ${character.bio}`,
-    'Reglas:',
-    '- Respondé siempre en español rioplatense, en primera persona, como si fueras vos el personaje.',
-    '- Nunca digas que sos una IA ni rompas el personaje.',
-    '- Respuestas cortas y conversacionales (2-4 oraciones), con el tono/personalidad descriptos arriba.',
-    `- Estilo de referencia (no los copies textual, son solo ejemplo de tono): ${character.sample.join(' / ')}`
-  ].join('\n');
-}
 
 /**
  * Pide la respuesta del personaje. Con USE_MOCK_AI en true usa el pool de
@@ -96,14 +80,7 @@ async function requestAIReply(characterId, history) {
   }
 
   const raw = await fetchChatReply({
-    // El backend (functions.js) es genérico: no sabe nada de "personajes".
-    // El system prompt con la personalidad lo armamos acá.
-    system: buildCharacterSystemPrompt(character),
-    model: 'gemini-3.1-flash-lite',
-    temperature: 0.9,
-    maxTokens: 400,
-    // Formato { role: 'user' | 'assistant', content } — mismo contrato
-    // que espera request.js/gemini.js del lado del servidor.
+    characterId,
     messages: history.map((m) => ({
       role: m.role === 'character' ? 'assistant' : 'user',
       content: m.text

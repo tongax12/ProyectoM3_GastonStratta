@@ -5,16 +5,13 @@
  * en vez de hacer fetch directamente — así el detalle de "cómo se llama
  * al backend" vive en un solo lugar.
  */
-export async function fetchChatReply({ system, model, temperature, maxTokens, messages }) {
+export async function fetchChatReply({ characterId, messages }) {
   const res = await fetch('/api/functions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      system,
-      model: 'gemini-3.1-flash-lite',
-      temperature,
-      max_tokens: maxTokens,
-      messages
+    body: JSON.stringify({ 
+      characterId, 
+      messages 
     })
   });
 
@@ -23,13 +20,9 @@ export async function fetchChatReply({ system, model, temperature, maxTokens, me
     try {
       const errData = await res.json();
       if (errData && errData.error) msg = errData.error;
-    } catch (_) {
-      // el body de error no era JSON, usamos el mensaje genérico
-    }
+    } catch (_) {}
     throw new Error(msg);
   }
 
-  // Devuelve el raw (shape tipo Anthropic: content[]); quien llama lo
-  // pasa por normalizeAIResponse para sacar el texto.
   return res.json();
 }
