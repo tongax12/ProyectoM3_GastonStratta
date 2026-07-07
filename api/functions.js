@@ -1,12 +1,8 @@
-/*
- * src/api/functions.js
- * Serverless Function
-*/
 import { GoogleGenAI } from "@google/genai";
-import { isRateLimitError, getHttpStatus } from "../utils/errors.js";
-import { toGeminiContents } from "../utils/gemini.js";
-import { parseJsonBody, getMessages, getGenerationSettings } from "../utils/request.js";
-import { createChatResponse } from "../utils/response.js";
+import { isRateLimitError, getHttpStatus } from "../src/utils/errors.js";
+import { toGeminiContents } from "../src/utils/gemini.js";
+import { parseJsonBody, getMessages, getGenerationSettings } from "../src/utils/request.js";
+import { createChatResponse } from "../src/utils/response.js";
 
 
 export default async function handler(req, res) {
@@ -45,14 +41,14 @@ export default async function handler(req, res) {
     console.error('[/api/functions] Error:', error);
 
     if (isRateLimitError(error)) {
-      return res.status(429).json( {
+      return res.status(429).json({
         error: 'Rate limit de Gemini. Reintentá en unos segundos.',
         retryAfterSeconds: 8,
       });
     }
 
-    return res.status(getHttpStatus(error)).json( {
+    return res.status(getHttpStatus(error)).json({
       error: error.message || 'Error generando respuesta del chat',
     });
   }
-};
+}

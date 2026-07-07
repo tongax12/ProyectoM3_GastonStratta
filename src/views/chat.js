@@ -17,7 +17,7 @@ const conversations = {};
 // Flags de "escribiendo..." por personaje, para no perder el estado al cambiar de tab
 const typingState = {};
 
-const USE_MOCK_AI = true; // true = respuestas de ejemplo locales, sin gastar cuota de la API
+const USE_MOCK_AI = false; // true = respuestas de ejemplo locales, sin gastar cuota de la API
 
 // Íconos en SVG (sin emojis), heredan el color del botón vía currentColor
 const ICON_COPY = `
