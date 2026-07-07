@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       config: {
         systemInstruction: system,
         temperature,
-        maxOutputTokens,
+        maxOutputTokens:400 ,
       },
     });
 
