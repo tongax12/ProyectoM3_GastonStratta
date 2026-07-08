@@ -101,6 +101,7 @@ Acordate de agregar `GEMINI_API_KEY` como variable de entorno en Vercel (Setting
 | Modo oscuro | ![alt text](./src/img/dark-theme.png) |
 
 ## Estructura del Proyecto
+```
 ProyectoM3_GastonStratta/
 ├── api/
 │   └── functions.js              # API serverless — handler del chat con Gemini
@@ -151,7 +152,7 @@ ProyectoM3_GastonStratta/
 ├── package-lock.json
 ├── README.md
 └── vercel.json
-
+```
 ## Deploy
 
 🔗 **Demo en vivo:** [Proyecto desplegado](https://proyecto-m3-gaston-stratta.vercel.app)
