@@ -448,6 +448,10 @@ img { max-width: 100%; display: block; }
   background: var(--app-bg);
   color: var(--app-ink);
 }
+.chat-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 .chat-input:focus { border-color: var(--c-primary); }
 
 .btn-send {
@@ -462,6 +466,10 @@ img { max-width: 100%; display: block; }
 }
 .btn-send:active { transform: scale(0.95); }
 
+.btn-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 /* =========================================================
    Vista About
    ========================================================= */

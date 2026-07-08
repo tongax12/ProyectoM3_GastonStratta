@@ -1,9 +1,21 @@
 import { GoogleGenAI } from "@google/genai";
 import { isRateLimitError, getHttpStatus } from "../src/utils/errors.js";
 import { toGeminiContents } from "../src/utils/gemini.js";
-import { parseJsonBody, getMessages, getGenerationSettings } from "../src/utils/request.js";
+import { parseJsonBody, getMessages } from "../src/utils/request.js";
 import { createChatResponse } from "../src/utils/response.js";
+import { getCharacter } from "../src/characters.js";
 
+function buildCharacterSystemPrompt(character) { //creamos el system prompt en el back para que no se edite
+  return [
+    `Estás interpretando a ${character.name} ("${character.tagline}") en una app de chat llamada CharChat.`,
+    `Descripción del personaje: ${character.bio}`,
+    'Reglas:',
+    '- Respondé siempre en español rioplatense, en primera persona, como si fueras vos el personaje.',
+    '- Nunca digas que sos una IA ni rompas el personaje.',
+    '- Respuestas cortas y conversacionales (2-4 oraciones), con el tono/personalidad descriptos arriba.',
+    `- Estilo de referencia (no los copies textual, son solo ejemplo de tono): ${character.sample.join(' / ')}`
+  ].join('\n');
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -19,25 +31,33 @@ export default async function handler(req, res) {
     }
 
     const messages = getMessages(payload);
-    const { system, modelName, temperature, maxOutputTokens } = getGenerationSettings(payload);
+    const trimmedMessages = messages.slice(-10); //hace un recorte en el historial, pasa los ultimos 10
+    const characterId = payload?.characterId;
+    const character = getCharacter(characterId);
+
+    if (!character) {
+      return res.status(400).json({ error: 'Personaje no encontrado' });
+    }
+
+    const system = buildCharacterSystemPrompt(character);
 
     const ai = new GoogleGenAI({ apiKey });
-    const contents = toGeminiContents(messages);
+    const contents = toGeminiContents(trimmedMessages);
 
     const result = await ai.models.generateContent({
       model: 'gemini-3.1-flash-lite',
       contents,
       config: {
         systemInstruction: system,
-        temperature,
-        maxOutputTokens:400 ,
+        temperature: character.temperature,
+        maxOutputTokens: 400,
       },
     });
 
     const text = (result.text || '').trim();
     const finishReason = result.candidates?.[0]?.finishReason;
     const usage = result.usageMetadata;
-    return res.status(200).json(createChatResponse({ text, payload, finishReason, usage}));
+    return res.status(200).json(createChatResponse({ text, payload, finishReason, usage }));
   } catch (error) {
     console.error('[/api/functions] Error:', error);
 

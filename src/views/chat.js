@@ -221,6 +221,7 @@ export function render(container, params) {
   const form = container.querySelector('#chat-form');
   const input = container.querySelector('#chat-input');
   const typingEl = container.querySelector('#typing-indicator');
+  const sendBtn = container.querySelector('#chat-send');
 
   setBeforeLeave(() => {
     document.body.style.background = '';
@@ -300,6 +301,8 @@ export function render(container, params) {
     history.push({ role: 'user', text, ts: Date.now() });
     renderLog(characterId);
 
+    lockUI();
+
     typingState[characterId] = true;
     typingEl.hidden = (characterId !== activeId);
     scrollToBottom();
@@ -321,10 +324,13 @@ export function render(container, params) {
         });
         scrollToBottom();
       }
+    } finally{
+      unlockUI();
     }
   }
 
   async function retrySend(characterId, text) {
+    lockUI();
     typingState[characterId] = true;
     if (characterId === activeId) {
       typingEl.hidden = false;
@@ -348,6 +354,9 @@ export function render(container, params) {
         });
         scrollToBottom();
       }
+    }
+    finally{
+      unlockUI();
     }
   }
 
@@ -387,6 +396,17 @@ export function render(container, params) {
     input.style.height = 'auto';
     sendMessage(text);
   });
+
+  function lockUI() {
+  input.disabled = true;
+  sendBtn.disabled = true;
+}
+
+function unlockUI() {
+  input.disabled = false;
+  sendBtn.disabled = false;
+  input.focus();
+}
 
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
