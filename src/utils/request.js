@@ -17,13 +17,5 @@ export function getMessages(payload) {
   return messages;
 }
 
-export function getGenerationSettings(payload) {
-  return {
-    system: typeof payload?.system === 'string' ? payload.system : '',
-    modelName: typeof payload?.model === 'string' ? payload.model : 'gemini-2.5-flash',
-    temperature: typeof payload?.temperature === 'number' ? payload.temperature : 0.7,
-    maxOutputTokens: typeof payload?.max_tokens === 'number' ? payload.max_tokens : 150,
-  };
-}
 
 

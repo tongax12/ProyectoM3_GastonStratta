@@ -2,14 +2,16 @@
   "name": "proyectom3_gastonstratta",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.html",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "build": "echo 'No build step required'"
+  "dev": "npx serve src -s -l 3000",
+  "dev:api": "vercel dev",
+  "test": "vitest run",
+  "test:watch": "vitest"
+
   },
   "repository": {
     "type": "git",
@@ -25,7 +27,6 @@
   "homepage": "https://github.com/tongax12/ProyectoM3_GastonStratta#readme",
   "dependencies": {
     "@google/genai": "^2.10.0",
-    "express": "^5.2.1",
     "vitest": "^4.1.9"
   }
 }
