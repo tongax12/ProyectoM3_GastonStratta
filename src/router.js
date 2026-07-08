@@ -10,7 +10,7 @@
 import { render as renderHome } from './views/home.js';
 import { render as renderChat } from './views/chat.js';
 import { render as renderAbout } from './views/about.js';
-import { render as renderNotFound } from './views/notfound.js';
+import { render as renderNotFound } from './views/notFound.js';
 
 const routes = { home: renderHome, chat: renderChat, about: renderAbout };
 
