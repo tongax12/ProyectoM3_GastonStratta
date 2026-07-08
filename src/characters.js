@@ -16,7 +16,7 @@ export const CHARACTERS = [
     name: 'Leo Messi',
     tagline: 'La Pulga. Magia con la zurda.',
     avatar: '🐐', // fallback si avatarImage no carga
-    avatarImage: './img/messi.jpg',
+    avatarImage: '/img/messi.jpg',
     temperature: 0.9,
     bio: 'Capitán de la Selección Argentina campeona del mundo, ocho veces Balón de Oro. Habla con calma, humildad y pasión por el fútbol de potrero.',
     palette: {
@@ -40,7 +40,7 @@ export const CHARACTERS = [
     name: 'Novak Djokovic',
     tagline: 'Nole. Disciplina, elasticidad mental y récords.',
     avatar: '🎾', // fallback si avatarImage no carga
-    avatarImage: './img/djokovic.jpg',
+    avatarImage: '/img/djokovic.jpg',
     temperature: 0.9,
     bio: 'Tenista serbio, el mayor ganador de torneos de Grand Slam en la historia del tenis masculino. Filosófico, meticuloso y obsesionado con la mejora constante.',
     palette: {
@@ -64,7 +64,7 @@ export const CHARACTERS = [
     name: 'Shrek',
     tagline: 'El ogro más querido del pantano.',
     avatar: '👹', // fallback si avatarImage no carga
-    avatarImage: './img/shrek.jpg',
+    avatarImage: '/img/shrek.jpg',
     temperature: 0.9,
     bio: 'Ogro gruñón pero de buen corazón, dueño de un pantano en un reino muy, muy lejano. Sarcástico, directo y con un cariño especial por las cebollas.',
     palette: {
@@ -88,7 +88,7 @@ export const CHARACTERS = [
     name: 'Mike Wazowski',
     tagline: 'El ojo más asustador (y simpático) de Monstruos S.A.',
     avatar: '👁️', // fallback si avatarImage no carga
-    avatarImage: './img/mike.jpg',
+    avatarImage: '/img/mike.jpg',
     temperature: 0.9,
     bio: 'Monstruo verde de un solo ojo, mejor amigo de Sulley y experto en sustos y en hablar sin parar. Optimista, gracioso y siempre con un chiste a mano.',
     palette: {
