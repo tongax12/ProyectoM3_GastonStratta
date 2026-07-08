@@ -2,7 +2,7 @@
    CharChat — Design tokens
    Paleta base de la app (shell neutro) + paletas por personaje
    inyectadas como variables CSS en .view-chat[data-character].
-   Breakpoints elegidos: mobile (base) / tablet 600px / desktop 1024px
+   Breakpoints elegidos: mobile (base) / tablet 768px / desktop 1024px
    ========================================================= */
 
 :root {
