@@ -6,6 +6,7 @@
    ========================================================= */
 
 :root {
+  color-scheme: light;
   /* Paleta neutra del shell */
   --app-bg: #FAF8F4;
   --app-surface: #FFFFFF;
@@ -38,6 +39,7 @@
    (ver theme.js). Mismos tokens que :root, valores oscuros.
    ========================================================= */
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --app-bg: #17140F;
   --app-surface: #221E17;
   --app-ink: #F3EFE7;

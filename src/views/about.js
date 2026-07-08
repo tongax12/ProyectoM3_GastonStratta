@@ -30,7 +30,7 @@ export function render(container) {
         <p class="eyebrow">Acerca de</p>
         <h1 class="hero-title">El proyecto</h1>
         <p class="hero-subtitle">
-          CharChat es una Single Page Application construida con HTML, CSS y JavaScript puro
+          CharChat es una Single Page Application hecha por ComicSansCon. Fué construida con HTML, CSS y JavaScript puro
           (sin frameworks). Implementa ruteo del lado del cliente con la History API,
           navegación accesible y un diseño mobile-first que escala a tablet y desktop.
         </p>

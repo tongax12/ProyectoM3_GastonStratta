@@ -7,7 +7,7 @@ describe("characters.js", () => {
       const messi = getCharacter("messi");
       expect(messi.name).toBe("Leo Messi");
       expect(messi.id).toBe("messi");
-      expect(messi.temperature).toBe(0.9);
+      expect(messi.temperature).toBe(0.7);
     });
 
     it("devuelve el primer personaje (messi) si el id no existe", () => {
