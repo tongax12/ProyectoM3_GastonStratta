@@ -277,7 +277,7 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--app-ink);
+  background: #1E1B16;;
   color: #fff;
   font-size: 0.82rem;
   font-weight: 500;
