@@ -10,7 +10,7 @@
 import { render as renderHome } from './views/home.js';
 import { render as renderChat } from './views/chat.js';
 import { render as renderAbout } from './views/about.js';
-import { render as renderNotFound } from './views/notFound.js';
+import { render as renderNotFound } from './views/notfound.js';
 
 const routes = { home: renderHome, chat: renderChat, about: renderAbout };
 
@@ -21,11 +21,15 @@ export function setBeforeLeave(fn) {
   beforeLeave = fn;
 }
 
+/**
+ * Limpia un pathname y devuelve el nombre de ruta a usar.
+ * Saca barras de más al principio, al final, o repetidas en el medio
+ * (ej: "/chat/" -> "chat", "//about//" -> "about", "" -> "home").
+ */
 function parsePath(pathname) {
-  // normaliza "/", "/index.html", "" -> "home"
-  const clean = pathname.replace(/^\/+|\/+$/g, '');
-  if (clean === '' || clean === 'index.html') return 'home';
-  return clean.split('/')[0];
+  const segments = pathname.split('/').filter(Boolean); // saca segmentos vacíos (barras de más)
+  if (segments.length === 0 || segments[0] === 'index.html') return 'home';
+  return segments[0];
 }
 
 function updateActiveNav(routeName) {
