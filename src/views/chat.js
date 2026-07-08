@@ -81,7 +81,7 @@ async function requestAIReply(characterId, history) {
 
   const raw = await fetchChatReply({
     characterId,
-    messages: history.map((m) => ({
+    messages: history.slice(-10).map((m) => ({
       role: m.role === 'character' ? 'assistant' : 'user',
       content: m.text
     }))
