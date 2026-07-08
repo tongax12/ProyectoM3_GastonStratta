@@ -223,7 +223,11 @@ export function render(container, params) {
   const typingEl = container.querySelector('#typing-indicator');
   const sendBtn = container.querySelector('#chat-send');
 
+  const themeObserver = new MutationObserver(() => applyPalette(activeId));
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
   setBeforeLeave(() => {
+    themeObserver.disconnect();
     document.body.style.background = '';
   });
   const typingLabel = container.querySelector('#typing-label');
@@ -246,13 +250,18 @@ export function render(container, params) {
     }, 2000);
   }
 
+  function getCSSVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
   function applyPalette(characterId) {
     const c = getCharacter(characterId);
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     root.dataset.character = characterId;
     root.style.setProperty('--c-primary', c.palette.primary);
     root.style.setProperty('--c-secondary', c.palette.secondary);
-    root.style.setProperty('--c-bg', c.palette.bg);
-    root.style.setProperty('--c-surface', c.palette.surface);
+    root.style.setProperty('--c-bg', isDark ? getCSSVar('--app-bg') : c.palette.bg);
+    root.style.setProperty('--c-surface', isDark ? getCSSVar('--app-surface') : c.palette.surface);
     root.style.setProperty('--c-text', c.palette.text);
     root.style.setProperty('--c-on-primary', c.palette.onPrimary);
     document.body.style.background = `color-mix(in srgb, ${c.palette.primary} 38%, var(--app-bg))`;

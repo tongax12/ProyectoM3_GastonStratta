@@ -52,17 +52,6 @@
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
-/* Overrides del chat en modo oscuro: el log y las burbujas del personaje
-   usan los valores del shell en vez de la paleta clara del personaje */
-:root[data-theme="dark"] .view-chat {
-  --c-bg: var(--app-bg);
-  --c-surface: var(--app-surface);
-}
-:root[data-theme="dark"] .msg-character .msg-bubble {
-  color: var(--app-ink);
-  border-color: var(--app-line);
-}
-
 /* Transición suave al cambiar de tema, sin animar todo lo demás */
 body, .app-header, .view-chat, .char-card, .about-card, .char-about-card {
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
