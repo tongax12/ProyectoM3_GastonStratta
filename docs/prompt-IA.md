@@ -10,3 +10,15 @@ Tengo un error al copiar un mensaje cuando estoy en modo oscuro, no se llega a l
 
 Resumen de la respuesta de la IA:
 -CSS color-scheme — Se agregó color-scheme: light y color-scheme: dark en el theme para evitar que el navegador aplique estilos oscuros por defecto al copiar texto en modo claro.
+
+Contexto: Estás trabajando en CharChat, una SPA de chat conversacional con personajes (Messi, Djokovic, Shrek, Mike Wazowski) potenciada por Google Gemini. El proyecto tiene frontend vanilla (HTML/CSS/JS con router propio), API serverless en Vercel.
+Este es mi chat.js por el momento, necesito que me guies en como hacer un sistema multi-personaje.
+
+Resumen de la respuesta de la IA: 
+Se explicó que la arquitectura ya era data-driven (CHARACTERS + getCharacter), y que alcanzaba con agregar un objeto nuevo al array, sin tocar chat.js.
+
+Contexto: Estás trabajando en CharChat, una SPA de chat conversacional con personajes (Messi, Djokovic, Shrek, Mike Wazowski) potenciada por Google Gemini. El proyecto tiene frontend vanilla (HTML/CSS/JS con router propio), API serverless en Vercel.
+En vez de ponerle emojis al chatbot, quiero hacer una función que lea una imagen y reemplace el emoji por esa foto.
+
+Resumen de la respuesta de la IA:
+Se agregó avatarImage a los personajes, una función characterAvatarHTML() que arma el <img> con fallback al emoji, y se actualizaron home.js, chat.js y about.js para usarla.
