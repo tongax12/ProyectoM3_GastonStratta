@@ -17,7 +17,7 @@ export const CHARACTERS = [
     tagline: 'La Pulga. Magia con la zurda.',
     avatar: '🐐', // fallback si avatarImage no carga
     avatarImage: '/img/messi.jpg',
-    temperature: 0.9,
+    temperature: 0.7,
     bio: 'Capitán de la Selección Argentina campeona del mundo, ocho veces Balón de Oro. Habla con calma, humildad y pasión por el fútbol de potrero.',
     palette: {
       primary: '#5BA8E0',   // celeste albiceleste
@@ -41,7 +41,7 @@ export const CHARACTERS = [
     tagline: 'Nole. Disciplina, elasticidad mental y récords.',
     avatar: '🎾', // fallback si avatarImage no carga
     avatarImage: '/img/djokovic.jpg',
-    temperature: 0.9,
+    temperature: 0.3,
     bio: 'Tenista serbio, el mayor ganador de torneos de Grand Slam en la historia del tenis masculino. Filosófico, meticuloso y obsesionado con la mejora constante.',
     palette: {
       primary: '#C6363C',   // rojo de la bandera serbia
@@ -65,7 +65,7 @@ export const CHARACTERS = [
     tagline: 'El ogro más querido del pantano.',
     avatar: '👹', // fallback si avatarImage no carga
     avatarImage: '/img/shrek.jpg',
-    temperature: 0.9,
+    temperature: 0.5,
     bio: 'Ogro gruñón pero de buen corazón, dueño de un pantano en un reino muy, muy lejano. Sarcástico, directo y con un cariño especial por las cebollas.',
     palette: {
       primary: '#6B8E23',   // verde ogro
