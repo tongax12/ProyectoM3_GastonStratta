@@ -100,9 +100,61 @@ Acordate de agregar `GEMINI_API_KEY` como variable de entorno en Vercel (Setting
 | Chat con Mike | ![alt text]( ./src/img/chat-mike.png ) |
 | Modo oscuro | ![alt text](./src/img/dark-theme.png) |
 
+## Estructura del Proyecto
+ProyectoM3_GastonStratta/
+├── api/
+│   └── functions.js              # API serverless — handler del chat con Gemini
+├── docs/
+│   └── prompt-IA.md              # Registro de prompts usados con IA
+├── src/                          # Frontend SPA
+│   ├── css/
+│   │   └── styles.css            # Estilos globales + themes claro/oscuro
+│   ├── img/                      # Imágenes (avatares + capturas)
+│   │   ├── messi.jpg, djokovic.jpg, shrek.jpg, mike.jpg
+│   │   └── home.png, chat-messi.png, chat-novak.png, chat-shrek.png,
+│   │       chat-mike.png, dark-theme.png
+│   ├── services/
+│   │   └── fetchApi.js           # Llamadas a la API desde el frontend
+│   ├── utils/
+│   │   ├── errors.js             # Utilidades de manejo de errores
+│   │   ├── gemini.js             # Transformación de mensajes a formato Gemini
+│   │   ├── request.js            # Parseo de body / mensajes
+│   │   └── response.js           # Formateo de respuestas del chat
+│   ├── views/
+│   │   ├── home.js               # Vista Home
+│   │   ├── chat.js               # Vista Chat
+│   │   ├── about.js              # Vista Acerca de
+│   │   └── notFound.js           # Vista 404
+│   ├── characters.js             # Catálogo de personajes
+│   ├── index.html                # Entry point HTML
+│   ├── main.js                   # Bootstrap de la app
+│   ├── navigation.js             # Navegación (header + tab-bar)
+│   ├── normalize.js              # CSS reset / normalización
+│   ├── router.js                 # Router SPA casero
+│   ├── theme.js                  # Toggle de tema claro/oscuro
+│   └── theme-init.js             # Tema sincrónico anti-flash
+├── tests/
+│   ├── characters.test.js        # 4 tests — personajes
+│   ├── errors.test.js            # 7 tests — utilidades de error
+│   ├── fetchApi.test.js          # 4 tests — fetchApi (mock de fetch)
+│   ├── functions.test.js         # 5 tests — API handler (mock de Gemini)
+│   ├── gemini.test.js            # 4 tests — transformación Gemini
+│   ├── normalize.test.js         # 6 tests — normalización de texto
+│   └── response.test.js          # 4 tests — formateo de respuestas
+├── .env                          # Variables de entorno (local, no commiteado)
+├── .env.example                  # Template de .env
+├── .env.local                    # Variables para Vercel dev (no commiteado)
+├── .vercel/                      # Config local de Vercel
+├── .vscode/
+│   └── settings.json
+├── package.json
+├── package-lock.json
+├── README.md
+└── vercel.json
+
 ## Deploy
 
-[Deploy en Vercel](https://proyecto-m3-gaston-stratta.vercel.app)
+🔗 **Demo en vivo:** [Proyecto desplegado](https://proyecto-m3-gaston-stratta.vercel.app)
 
 
 
