@@ -99,6 +99,8 @@ Acordate de agregar `GEMINI_API_KEY` como variable de entorno en Vercel (Setting
 | Chat con Novak | ![alt text](./src/img/chat-novak.png) |
 | Chat con Mike | ![alt text]( ./src/img/chat-mike.png ) |
 | Modo oscuro | ![alt text](./src/img/dark-theme.png) |
+| Home Mobile | ![alt text](./src/img/home-mobile.jpeg) |
+| Chat Mobile | ![alt text](./src/img/chat-mobile.jpeg) |
 
 ## Estructura del Proyecto
 ```
