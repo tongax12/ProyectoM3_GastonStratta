@@ -10,6 +10,7 @@
 import { render as renderHome } from './views/home.js';
 import { render as renderChat } from './views/chat.js';
 import { render as renderAbout } from './views/about.js';
+import { render as renderNotFound } from './views/notfound.js';
 
 const routes = { home: renderHome, chat: renderChat, about: renderAbout };
 
@@ -50,7 +51,7 @@ export function router() {
   }
 
   const name = parsePath(window.location.pathname);
-  const routeName = routes[name] ? name : 'home';
+  const routeName = routes[name] ? name : 'notfound';
   const params = Object.fromEntries(new URL(window.location.href).searchParams.entries());
 
   if (typeof beforeLeave === 'function') {
@@ -63,12 +64,8 @@ export function router() {
   const viewRoot = document.getElementById('view-root');
   viewRoot.innerHTML = '';
 
-  const renderFn = routes[routeName];
-  if (renderFn) {
-    renderFn(viewRoot, params);
-  } else {
-    viewRoot.innerHTML = '<p class="not-found">Vista no encontrada.</p>';
-  }
+  const renderFn = routes[name] || renderNotFound;
+  renderFn(viewRoot, params);
 
   viewRoot.setAttribute('tabindex', '-1');
   viewRoot.focus({ preventScroll: true });
